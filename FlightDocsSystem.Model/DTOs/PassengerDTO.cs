@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FlightDocsSystem.Models;
 
-public partial class Passenger
+public partial class PassengerDTO
 {
+
     public int PassengerId { get; set; }
 
     public string? FirstName { get; set; }

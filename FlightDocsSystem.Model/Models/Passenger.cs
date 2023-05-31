@@ -1,6 +1,6 @@
-﻿using System;
+﻿using FlightDocsSystem.Models;
+using System;
 using System.Collections.Generic;
-
 namespace FlightDocsSystem.Models;
 
 public partial class Passenger
