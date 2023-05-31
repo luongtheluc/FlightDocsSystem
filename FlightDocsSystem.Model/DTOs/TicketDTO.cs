@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FlightDocsSystem.Models;
 
-public partial class Ticket
+public partial class TicketDTO
 {
     public int TicketId { get; set; }
 
@@ -15,7 +15,5 @@ public partial class Ticket
 
     public string? SeatNumber { get; set; }
 
-    public virtual Flight? Flight { get; set; }
 
-    public virtual Passenger? Passenger { get; set; }
 }

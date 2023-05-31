@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FlightDocsSystem.Models;
 
-public partial class Document
+public partial class DocumentDTO
 {
     public int DocumentId { get; set; }
 
@@ -20,16 +20,4 @@ public partial class Document
     public int? PassengerId { get; set; }
 
     public int? UserId { get; set; }
-
-    public DateTime? CreateAt { get; set; }
-
-    public DateTime? UpdateAt { get; set; }
-
-    public virtual FlightDocumentType? DocumentTypeNavigation { get; set; }
-
-    public virtual Flight? Flight { get; set; }
-
-    public virtual Passenger? Passenger { get; set; }
-
-    public virtual User? User { get; set; }
 }

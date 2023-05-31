@@ -15,11 +15,4 @@ public partial class Passenger
 
     public string? Gender { get; set; }
 
-    public DateTime? CreateAt { get; set; }
-
-    public DateTime? UpdateAt { get; set; }
-
-    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
-
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }
