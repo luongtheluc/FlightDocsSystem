@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FlightDocsSystem.Models;
 
-public partial class Aircraft
+public class Aircraft
 {
     public int AircraftId { get; set; }
 

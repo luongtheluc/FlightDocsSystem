@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FlightDocsSystem.Models.DTOs;
 
-public partial class FlightDocumentType
+public partial class FlightDocumentTypeDTO
 {
     public int DocumentTypeId { get; set; }
 
@@ -13,5 +13,4 @@ public partial class FlightDocumentType
 
     public DateTime? UpdateAt { get; set; }
 
-    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 }

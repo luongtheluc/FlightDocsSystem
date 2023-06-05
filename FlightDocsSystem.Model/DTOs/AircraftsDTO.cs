@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlightDocsSystem.Model.DTOs
 {
-    class AircraftsDTO
+    public class AircraftsDTO
     {
         public int AircraftId { get; set; }
 

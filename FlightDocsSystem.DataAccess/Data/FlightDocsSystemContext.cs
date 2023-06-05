@@ -14,27 +14,27 @@ public partial class FlightDocsSystemContext : DbContext
     {
     }
 
-    public virtual DbSet<Aircraft> Aircrafts { get; set; }
+    public virtual DbSet<Aircraft>? Aircrafts { get; set; }
 
-    public virtual DbSet<AircraftType> AircraftTypes { get; set; }
+    public virtual DbSet<AircraftType>? AircraftTypes { get; set; }
 
-    public virtual DbSet<Airport> Airports { get; set; }
+    public virtual DbSet<Airport>? Airports { get; set; }
 
-    public virtual DbSet<Document> Documents { get; set; }
+    public virtual DbSet<Document>? Documents { get; set; }
 
-    public virtual DbSet<Flight> Flights { get; set; }
+    public virtual DbSet<Flight>? Flights { get; set; }
 
-    public virtual DbSet<FlightDocumentType> FlightDocumentTypes { get; set; }
+    public virtual DbSet<FlightDocumentType>? FlightDocumentTypes { get; set; }
 
-    public virtual DbSet<Passenger> Passengers { get; set; }
+    public virtual DbSet<Passenger>? Passengers { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<Role>? Roles { get; set; }
 
-    public virtual DbSet<Ticket> Tickets { get; set; }
+    public virtual DbSet<Ticket>? Tickets { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<User>? Users { get; set; }
 
-    public virtual DbSet<UserRole> UserRoles { get; set; }
+    public virtual DbSet<UserRole>? UserRoles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Data Source=THELUC;Initial Catalog=FlightDocsSystem;Integrated Security=True;TrustServerCertificate=True");

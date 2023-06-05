@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FlightDocsSystem.Models.DTOs;
 
-public partial class Role
+public partial class RoleDTO
 {
     public int RoleId { get; set; }
 
