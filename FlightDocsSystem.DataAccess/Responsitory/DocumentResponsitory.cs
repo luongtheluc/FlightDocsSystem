@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FlightDocsSystem.DataAccess.Data;
 using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
-using FlightDocsSystem.Model;
-using FlightDocsSystem.Models;
+using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 

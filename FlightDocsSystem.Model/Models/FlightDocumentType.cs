@@ -1,8 +1,7 @@
-﻿using FlightDocsSystem.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-namespace FlightDocsSystem.Models;
 
+namespace FlightDocsSystem.Model.Models;
 
 public partial class FlightDocumentType
 {

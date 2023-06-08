@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FlightDocsSystem.Models;
+namespace FlightDocsSystem.Model.Models;
 
 public partial class Flight
 {
@@ -32,8 +32,6 @@ public partial class Flight
     public virtual Airport? DepartureAirport { get; set; }
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
-
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 
     public virtual User? User { get; set; }
 }

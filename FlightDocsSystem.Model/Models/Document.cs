@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FlightDocsSystem.Models;
+namespace FlightDocsSystem.Model.Models;
 
 public partial class Document
 {

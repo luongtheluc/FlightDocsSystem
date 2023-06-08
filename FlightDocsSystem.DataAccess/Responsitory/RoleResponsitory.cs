@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FlightDocsSystem.DataAccess.Data;
 using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
 using FlightDocsSystem.Model;
+using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models;
 using FlightDocsSystem.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +61,22 @@ namespace FlightDocsSystem.DataAccess.Responsitory
                 _context.Roles!.Update(update);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task AddUserRole(UserRoleDTO userRoleDTO)
+        {
+            if (userRoleDTO != null)
+            {
+                var addUserRole = _mapper.Map<UserRole>(userRoleDTO);
+                _context.UserRoles!.Add(addUserRole);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<int> GetUserRoleAsync()
+        {
+            var roleid = await _context.Roles!.Where(p => p.RoleName == "User").FirstOrDefaultAsync();
+            return roleid!.RoleId;
         }
     }
 }

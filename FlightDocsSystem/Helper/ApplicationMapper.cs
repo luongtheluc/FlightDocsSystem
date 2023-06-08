@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FlightDocsSystem.Model.DTOs;
+using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models;
 using FlightDocsSystem.Models.DTOs;
 
@@ -22,6 +23,7 @@ namespace FlightDocsSystem.Helper
             CreateMap<Passenger, PassengerDTO>().ReverseMap();
             CreateMap<Role, RoleDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<UserRole, UserRoleDTO>().ReverseMap();
 
         }
     }

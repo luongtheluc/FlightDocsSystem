@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FlightDocsSystem.Models;
+namespace FlightDocsSystem.Model.Models;
 
-public class Aircraft
+public partial class Aircraft
 {
     public int AircraftId { get; set; }
 

@@ -6,12 +6,14 @@ using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
 using FlightDocsSystem.Helper;
 using FlightDocsSystem.Model.DTOs;
 using FlightDocsSystem.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocsSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "User")]
     public class AircraftTypeController : ControllerBase
     {
         private readonly IAircraftTypeResponsitory _aircraftTypeRepo;

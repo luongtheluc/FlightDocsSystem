@@ -19,29 +19,8 @@ public partial class UserDTO
 
     public string? Phone { get; set; }
 
-    public bool? IsActive { get; set; }
 
-    public string? UserImage { get; set; }
 
-    public string? PasswordResetToken { get; set; }
 
-    public DateTime? ResetTokenExpries { get; set; }
 
-    public string? VerificationToken { get; set; }
-
-    public DateTime? VerifyAt { get; set; }
-
-    public string? RefreshToken { get; set; }
-
-    public DateTime? RefreshTokenCreated { get; set; }
-
-    public DateTime? RefreshTokenExpries { get; set; }
-
-    public DateTime? CreateAt { get; set; }
-
-    public DateTime? UpdateAt { get; set; }
-
-    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
-
-    public virtual ICollection<Flight> Flights { get; set; } = new List<Flight>();
 }

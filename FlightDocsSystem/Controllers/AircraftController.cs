@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
 using FlightDocsSystem.Helper;
 using FlightDocsSystem.Model.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocsSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AircraftController : ControllerBase
     {
         private readonly IAircraftResponsitory _aircraftRepo;

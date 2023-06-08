@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
 using FlightDocsSystem.Helper;
 using FlightDocsSystem.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocsSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class RoleController : ControllerBase
     {
         private readonly IRoleResponsitory _roleRepo;
@@ -139,6 +141,30 @@ namespace FlightDocsSystem.Controllers
                     Data = Role
                 });
 
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(new ApiResponse
+                {
+                    Success = false,
+                    Message = e.Message,
+                    Data = null
+                });
+            }
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost("get-role")]
+        public async Task<IActionResult> AddUserRole(UserRoleDTO userRoleDTO)
+        {
+            try
+            {
+                await _roleRepo.AddUserRole(userRoleDTO);
+                return Ok(new ApiResponse
+                {
+                    Data = null,
+                    Success = true,
+                    Message = "User get role success"
+                });
             }
             catch (System.Exception e)
             {

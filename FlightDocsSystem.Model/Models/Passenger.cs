@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace FlightDocsSystem.Models;
+
+namespace FlightDocsSystem.Model.Models;
 
 public partial class Passenger
 {
@@ -20,5 +21,4 @@ public partial class Passenger
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

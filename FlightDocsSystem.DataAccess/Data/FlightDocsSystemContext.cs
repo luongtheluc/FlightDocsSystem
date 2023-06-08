@@ -1,7 +1,9 @@
-﻿using FlightDocsSystem.Models;
+﻿using System;
+using System.Collections.Generic;
+using FlightDocsSystem.Model.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlightDocsSystem.Model;
+namespace FlightDocsSystem.DataAccess.Data;
 
 public partial class FlightDocsSystemContext : DbContext
 {
@@ -30,7 +32,6 @@ public partial class FlightDocsSystemContext : DbContext
 
     public virtual DbSet<Role>? Roles { get; set; }
 
-    public virtual DbSet<Ticket>? Tickets { get; set; }
 
     public virtual DbSet<User>? Users { get; set; }
 
@@ -248,9 +249,7 @@ public partial class FlightDocsSystemContext : DbContext
         {
             entity.HasKey(e => e.RoleId).HasName("PK__Roles__760965CC06F59FD5");
 
-            entity.Property(e => e.RoleId)
-                .ValueGeneratedNever()
-                .HasColumnName("role_id");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.CreateAt)
                 .HasColumnType("datetime")
                 .HasColumnName("create_at");
@@ -263,38 +262,11 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasColumnName("update_at");
         });
 
-        modelBuilder.Entity<Ticket>(entity =>
-        {
-            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__D596F96BBCA8265C");
-
-            entity.Property(e => e.TicketId).HasColumnName("ticket_id");
-            entity.Property(e => e.FlightId).HasColumnName("flight_id");
-            entity.Property(e => e.PassengerId).HasColumnName("passenger_id");
-            entity.Property(e => e.SeatNumber)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("seat_number");
-            entity.Property(e => e.TicketNumber)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("ticket_number");
-
-            entity.HasOne(d => d.Flight).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.FlightId)
-                .HasConstraintName("FK__Tickets__flight___412EB0B6");
-
-            entity.HasOne(d => d.Passenger).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.PassengerId)
-                .HasConstraintName("FK__Tickets__passeng__4222D4EF");
-        });
-
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__Users__B9BE370F2CF8CC80");
 
-            entity.Property(e => e.UserId)
-                .ValueGeneratedNever()
-                .HasColumnName("user_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(100)
                 .HasColumnName("address");
@@ -343,10 +315,12 @@ public partial class FlightDocsSystemContext : DbContext
 
             entity.HasOne(d => d.Role).WithMany()
                 .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__UserRoles__role___5070F446");
 
             entity.HasOne(d => d.User).WithMany()
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__UserRoles__user___4F7CD00D");
         });
 
