@@ -31,8 +31,8 @@ namespace FlightDocsSystem.Controllers
         {
             try
             {
-                var hashPassword = HashPassword.HashPasswordBycript(userDTO.Password!);
-                var addUser = await _authRepo.AddUserAsync(userDTO);
+                var randomToken = Jwt.CreateRandomToken();
+                var addUser = await _authRepo.AddUserAsync(userDTO, randomToken);
                 if (addUser == -1)
                 {
                     return BadRequest(new ApiResponse
@@ -89,6 +89,15 @@ namespace FlightDocsSystem.Controllers
 
                         if (user != null)
                         {
+                            if (user.VerifyAt == null)
+                            {
+                                return BadRequest(new ApiResponse
+                                {
+                                    Data = null,
+                                    Message = "Email is not verify",
+                                    Success = true
+                                });
+                            }
                             var secretKey = _configuration.GetValue<string>("AppSettings:Token");
 
                             string token = Jwt.CreateToken(user, secretKey!);
@@ -102,8 +111,8 @@ namespace FlightDocsSystem.Controllers
                         return BadRequest(new ApiResponse
                         {
                             Data = null,
-                            Message = "Login fail",
-                            Success = true
+                            Message = "username or password wrong!",
+                            Success = false
                         });
                     }
                     else
@@ -111,7 +120,7 @@ namespace FlightDocsSystem.Controllers
                         return NotFound(new ApiResponse
                         {
                             Success = false,
-                            Message = "Login fail",
+                            Message = "user not found",
                             Data = null
                         });
                     }
@@ -136,5 +145,102 @@ namespace FlightDocsSystem.Controllers
 
 
         }
+
+        [HttpPost("verify")]
+        public async Task<IActionResult> Verify(string token)
+        {
+            var user = await _authRepo.CheckVerifyTokenAsync(token);
+            if (user == null)
+            {
+                return BadRequest(new ApiResponse
+                {
+                    Success = false,
+                    Message = "Invalid token",
+                    Data = null
+                });
+            }
+            user.VerifyAt = DateTime.Now;
+            await _authRepo.UpdateUserAsync(user);
+            return Ok(new ApiResponse
+            {
+                Success = true,
+                Message = "Email is verifed",
+                Data = null
+            });
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = await _authRepo.CheckEmailAsync(email);
+            if (user == null)
+            {
+                return BadRequest(new ApiResponse
+                {
+                    Success = false,
+                    Message = "User not found",
+                    Data = null
+                });
+            }
+            user.PasswordResetToken = Jwt.CreateRandomToken();
+            user.ResetTokenExpries = DateTime.Now.AddDays(1);
+
+            await _authRepo.UpdateUserAsync(user);
+            return Ok(new ApiResponse
+            {
+                Success = true,
+                Message = "You may now reset your password",
+                Data = null
+            });
+        }
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(string token, string password)
+        {
+            try
+            {
+                var user = await _authRepo.CheckPasswordResetTokenAsync(token);
+                if (user == null)
+                {
+                    return BadRequest(new ApiResponse
+                    {
+                        Success = false,
+                        Message = "User not found",
+                        Data = null
+                    });
+
+                }
+                if (user.ResetTokenExpries < DateTime.Now)
+                {
+                    return BadRequest(new ApiResponse
+                    {
+                        Success = false,
+                        Message = "token expired",
+                        Data = null
+                    });
+                }
+                string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+                user.Password = passwordHash;
+                user.PasswordResetToken = "";
+                user.ResetTokenExpries = null;
+
+                await _authRepo.UpdateUserAsync(user);
+                return Ok(new ApiResponse
+                {
+                    Success = true,
+                    Message = "You may now reset your password",
+                    Data = null
+                });
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(new ApiResponse
+                {
+                    Success = false,
+                    Message = e.Message,
+                    Data = null
+                });
+            }
+        }
+
     }
 }

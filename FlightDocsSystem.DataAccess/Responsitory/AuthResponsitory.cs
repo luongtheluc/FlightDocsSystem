@@ -1,3 +1,4 @@
+using System.Runtime.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             this._mapper = mapper;
         }
 
-        public async Task<int> AddUserAsync(UserDTO user)
+        public async Task<int> AddUserAsync(UserDTO user, string randomToken)
         {
             if (await _context.Users!.CountAsync(x => x.Email == user.Email) > 0)
             {
@@ -33,14 +34,20 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             user.Password = passwordHash;
 
             var addnew = _mapper.Map<User>(user);
-
+            addnew.VerificationToken = randomToken;
             Console.WriteLine("\n \n id cua user: " + addnew.Username + "\n \n");
             _context.Users!.Add(addnew);
             await _context.SaveChangesAsync();
-            return user.UserId;
+            return addnew.UserId;
         }
 
-        public async Task<User> CheckLoginAsync(string password, string username)
+        public async Task<User> CheckEmailAsync(string email)
+        {
+            var user = await _context.Users!.FirstOrDefaultAsync(u => u.Email == email);
+            return user!;
+        }
+
+        public async Task<User> CheckLoginAsync(string username, string password)
         {
             if (await CheckUserNameAsync(username))
             {
@@ -58,10 +65,22 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             return null!;
         }
 
+        public async Task<User> CheckPasswordResetTokenAsync(string token)
+        {
+            var user = await _context.Users!.FirstOrDefaultAsync(u => u.PasswordResetToken == token);
+            return user!;
+        }
+
         public async Task<bool> CheckUserNameAsync(string username)
         {
             var result = await _context.Users!.CountAsync(x => x.Username == username) > 0;
             return result;
+        }
+
+        public async Task<User> CheckVerifyTokenAsync(string token)
+        {
+            var user = await _context.Users!.FirstOrDefaultAsync(u => u.VerificationToken == token);
+            return user!;
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -74,6 +93,12 @@ namespace FlightDocsSystem.DataAccess.Responsitory
         {
             var roles = await _context.UserRoles!.Where(p => p.UserId == user.UserId).FirstOrDefaultAsync();
             return roles!.Role.RoleName!;
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            _context.Users!.Update(user);
+            await _context.SaveChangesAsync();
         }
     }
 }
