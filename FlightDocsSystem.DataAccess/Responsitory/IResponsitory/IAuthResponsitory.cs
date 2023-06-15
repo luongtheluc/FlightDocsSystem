@@ -19,5 +19,7 @@ namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
         public Task UpdateUserAsync(User user);
         Task<User> CheckEmailAsync(string email);
         Task<User> CheckPasswordResetTokenAsync(string token);
+        public Task<int> CheckRefreshToken(string token);
+        Task<User> GetUserByRefreshToken(string token);
     }
 }

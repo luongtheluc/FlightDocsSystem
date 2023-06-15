@@ -121,14 +121,18 @@ public partial class FlightDocsSystemContext : DbContext
             entity.Property(e => e.CreateAt)
                 .HasColumnType("datetime")
                 .HasColumnName("create_at");
-            entity.Property(e => e.DocumentNumber)
+            entity.Property(e => e.DocumentVersion)
                 .HasMaxLength(100)
                 .IsUnicode(false)
-                .HasColumnName("document_number");
-            entity.Property(e => e.DocumentType)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("document_type");
+                .HasColumnName("document_version");
+            entity.Property(e => e.DocumentPath)
+                .HasMaxLength(int.MaxValue)
+                .IsUnicode(true)
+                .HasColumnName("document_path");
+            entity.Property(e => e.CoverPath)
+                .HasMaxLength(int.MaxValue)
+                .HasColumnName("cover_path");
+            entity.Property(e => e.IsConfirm).HasColumnName("IsConfirm");
             entity.Property(e => e.DocumentTypeId).HasColumnName("document_type_id");
             entity.Property(e => e.ExpirationDate)
                 .HasColumnType("date")
@@ -308,7 +312,7 @@ public partial class FlightDocsSystemContext : DbContext
 
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id);
 
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");

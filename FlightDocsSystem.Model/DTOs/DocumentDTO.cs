@@ -9,9 +9,12 @@ public partial class DocumentDTO
 
     public int? FlightId { get; set; }
 
-    public string? DocumentType { get; set; }
+    public string? DocumentPath { get; set; }
+    public string? CoverPath { get; set; }
 
-    public string? DocumentNumber { get; set; }
+    public string? DocumentVersion { get; set; }
+    
+    public bool? IsComfirm { get; set; }
 
     public DateTime? ExpirationDate { get; set; }
 

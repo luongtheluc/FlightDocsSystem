@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Azure;
 using FlightDocsSystem.Model.Models;
 using Microsoft.IdentityModel.Tokens;
 
@@ -41,5 +42,26 @@ namespace FlightDocsSystem.Helper
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
+
+        public static RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Expired = DateTime.Now.AddDays(7),
+
+            };
+            return refreshToken;
+        }
+
+    }
+
+    public class RefreshToken
+    {
+        public string? Token { get; set; }
+        public DateTime Created { get; set; }
+
+        public DateTime Expired { get; set; }
+
     }
 }

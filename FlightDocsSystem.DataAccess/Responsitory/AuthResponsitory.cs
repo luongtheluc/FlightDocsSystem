@@ -100,5 +100,35 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             _context.Users!.Update(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<User> GetUserByRefreshToken(string token)
+        {
+            var user = await _context.Users!.Where(u => u.RefreshToken == token).FirstOrDefaultAsync();
+            return user!;
+        }
+
+        public async Task<int> CheckRefreshToken(string token)
+        {
+            if (await _context.Users!.CountAsync(u => u.RefreshToken == token) > 0)
+            {
+                var user = await _context.Users!.Where(p => p.RefreshToken == token).FirstOrDefaultAsync();
+                if (user!.RefreshTokenExpries > DateTime.Now)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+
     }
+
+
 }

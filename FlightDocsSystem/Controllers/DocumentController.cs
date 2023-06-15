@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlightDocsSystem.DataAccess.Responsitory;
 using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
 using FlightDocsSystem.Helper;
 using FlightDocsSystem.Models.DTOs;
@@ -12,21 +13,23 @@ namespace FlightDocsSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentResponsitory _documentRepo;
+        private readonly IFirebaseStorageService _firebaseStorageService;
 
-        public DocumentController(IDocumentResponsitory documentRepo)
+        public DocumentController(IDocumentResponsitory documentRepo, IFirebaseStorageService firebaseStorageService)
         {
-            _documentRepo = documentRepo;
+            this._documentRepo = documentRepo;
+            this._firebaseStorageService = firebaseStorageService;
         }
 
         const string NAMECONTROLLER = "Document"; //hien thi ten cua thong bao
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDocumentType()
+        public async Task<IActionResult> GetAllDocument()
         {
             try
             {
@@ -50,7 +53,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDocumentTypeById(int id)
+        public async Task<IActionResult> GetDocumentById(int id)
         {
             try
             {
@@ -83,10 +86,26 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddDocumentType(DocumentDTO model)
+        public async Task<IActionResult> AddDocument(IFormFile docFile, IFormFile coverFile, int flightId, DateTime expirationDate, int documentTypeId, int usedId)
         {
             try
             {
+                if (docFile == null || docFile.Length == 0 || coverFile == null || coverFile.Length == 0)
+                {
+                    return BadRequest("No file selected.");
+                }
+
+                var docUrl = await _firebaseStorageService.UploadImage(docFile);
+                var coverUrl = await _firebaseStorageService.UploadImage(coverFile);
+                var model = new DocumentDTO
+                {
+                    DocumentPath = docUrl,
+                    CoverPath = coverUrl,
+                    FlightId = flightId,
+                    ExpirationDate = expirationDate,
+                    DocumentTypeId = documentTypeId,
+                    UserId = usedId
+                };
                 var newDocumentId = await _documentRepo.AddDocumentAsync(model);
                 var Document = await _documentRepo.GetDocumentByIdAsync(newDocumentId);
                 if (Document != null)
@@ -117,7 +136,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocumentType(int id, DocumentDTO model)
+        public async Task<IActionResult> UpdateDocument(int id, DocumentDTO model)
         {
             try
             {
@@ -154,7 +173,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDocumentType([FromRoute] int id)
+        public async Task<IActionResult> DeleteDocument([FromRoute] int id)
         {
             try
             {

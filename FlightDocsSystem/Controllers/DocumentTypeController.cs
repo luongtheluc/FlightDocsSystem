@@ -16,17 +16,17 @@ namespace FlightDocsSystem.Controllers
     public class DocumentTypeController : ControllerBase
     {
         private readonly IFlightDocumentTypeResponsitory _flightDocumentTypeRepo;
-
+        const string NAMECONTROLLER = "FlightDocumentType"; //hien thi ten cua thong bao
         public DocumentTypeController(IFlightDocumentTypeResponsitory flightDocumentTypeRepo)
         {
             _flightDocumentTypeRepo = flightDocumentTypeRepo;
         }
 
-        const string NAMECONTROLLER = "FlightDocumentType"; //hien thi ten cua thong bao
+
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDocumentTypeType()
+        public async Task<IActionResult> GetAllDocumentType()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDocumentTypeTypeById(int id)
+        public async Task<IActionResult> GetDocumentTypeById(int id)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddDocumentTypeType(FlightDocumentTypeDTO model)
+        public async Task<IActionResult> AddDocumentType(FlightDocumentTypeDTO model)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocumentTypeType(int id, FlightDocumentTypeDTO model)
+        public async Task<IActionResult> UpdateDocumentType(int id, FlightDocumentTypeDTO model)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDocumentTypeType([FromRoute] int id)
+        public async Task<IActionResult> DeleteDocumentType([FromRoute] int id)
         {
             try
             {

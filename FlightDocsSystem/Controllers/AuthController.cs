@@ -101,6 +101,17 @@ namespace FlightDocsSystem.Controllers
                             var secretKey = _configuration.GetValue<string>("AppSettings:Token");
 
                             string token = Jwt.CreateToken(user, secretKey!);
+                            var refreshToken = Jwt.GenerateRefreshToken();
+                            var cookieOptions = new CookieOptions
+                            {
+                                HttpOnly = true,
+                                Expires = refreshToken.Expired,
+                            };
+                            Response.Cookies.Append("refreshToken", refreshToken.Token!, cookieOptions);
+                            user.RefreshToken = refreshToken.Token;
+                            user.RefreshTokenCreated = refreshToken.Created;
+                            user.RefreshTokenExpries = refreshToken.Expired;
+                            await _authRepo.UpdateUserAsync(user);
                             return Ok(new ApiResponse
                             {
                                 Data = token,
@@ -142,8 +153,6 @@ namespace FlightDocsSystem.Controllers
                 });
 
             }
-
-
         }
 
         [HttpPost("verify")]
@@ -242,5 +251,67 @@ namespace FlightDocsSystem.Controllers
             }
         }
 
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<string>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken is not null)
+            {
+                var check = await _authRepo.CheckRefreshToken(refreshToken!);
+                if (check == 1)
+                {
+                    var user = await _authRepo.GetUserByRefreshToken(refreshToken);
+                    var secretKey = _configuration.GetValue<string>("AppSettings:Token");
+                    string token = Jwt.CreateToken(user, secretKey!);
+                    var newRefreshToken = Jwt.GenerateRefreshToken();
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = newRefreshToken.Expired,
+                    };
+                    Response.Cookies.Append("refreshToken", newRefreshToken.Token!, cookieOptions);
+                    user.RefreshToken = newRefreshToken.Token;
+                    user.RefreshTokenCreated = newRefreshToken.Created;
+                    user.RefreshTokenExpries = newRefreshToken.Expired;
+                    await _authRepo.UpdateUserAsync(user);
+                    return Ok(new ApiResponse
+                    {
+                        Data = token,
+                        Message = "success",
+                        Success = true,
+                    });
+                }
+                else
+                {
+                    if (check == -1)
+                    {
+                        return Unauthorized(new ApiResponse
+                        {
+                            Data = null,
+                            Success = false,
+                            Message = "Invalid refresh token"
+                        });
+                    }
+                    else
+                    {
+                        return Unauthorized(new ApiResponse
+                        {
+                            Data = null,
+                            Success = false,
+                            Message = "Token expires"
+                        });
+                    }
+                }
+            }
+            else
+            {
+                return Unauthorized(new ApiResponse
+                {
+                    Data = null,
+                    Success = false,
+                    Message = "Invalid refresh token"
+                });
+            }
+        }
     }
 }

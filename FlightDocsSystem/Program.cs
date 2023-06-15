@@ -57,6 +57,7 @@ builder.Services.AddScoped<IFlightDocumentTypeResponsitory, FlightDocumentTypeRe
 builder.Services.AddScoped<IPassengerResponsitory, PassengerResponsitory>();
 builder.Services.AddScoped<IRoleResponsitory, RoleResponsitory>();
 builder.Services.AddScoped<IAuthResponsitory, AuthResponsitory>();
+builder.Services.AddScoped<IFirebaseStorageService, FirebaseStorageService>();
 
 
 var app = builder.Build();
