@@ -10,6 +10,7 @@ public partial class Document
     public int? FlightId { get; set; }
 
     public string? DocumentPath { get; set; }
+    public string? DocumentName { get; set; }
 
     public string? CoverPath { get; set; }
 

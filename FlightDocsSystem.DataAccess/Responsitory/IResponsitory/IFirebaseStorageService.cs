@@ -9,6 +9,6 @@ namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
 {
     public interface IFirebaseStorageService
     {
-        public Task<string> UploadImage(IFormFile file);
+        public Task<string> UploadFile(IFormFile file, string? DocumentVersion);
     }
 }

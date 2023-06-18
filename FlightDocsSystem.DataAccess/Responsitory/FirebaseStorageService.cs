@@ -18,7 +18,7 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             _configuration = configuration;
         }
 
-        public async Task<string> UploadImage(IFormFile file)
+        public async Task<string> UploadFile(IFormFile file, string? documentVersion)
         {
             var projectId = _configuration["Firebase:ProjectId"];
             var bucketName = _configuration["Firebase:BucketName"];
@@ -34,8 +34,12 @@ namespace FlightDocsSystem.DataAccess.Responsitory
 
             // Tạo tên tệp tin duy nhất
             var fileName = Path.GetFileName(file.FileName);
-            var objectName = $"{Path.GetFileNameWithoutExtension(fileName)}_{Guid.NewGuid()}{Path.GetExtension(fileName)}";
-
+            string objectName = "";
+            if (documentVersion == null)
+            {
+                objectName = $"{Path.GetFileNameWithoutExtension(fileName)}{Path.GetExtension(fileName)}";
+            }
+            objectName = $"{Path.GetFileNameWithoutExtension(fileName)}_{documentVersion}{Path.GetExtension(fileName)}";
             // Tải lên tệp tin lên Firebase Cloud Storage
             using (var memoryStream = new MemoryStream())
             {

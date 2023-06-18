@@ -18,9 +18,11 @@ namespace FlightDocsSystem.Controllers
     {
         private readonly IDocumentResponsitory _documentRepo;
         private readonly IFirebaseStorageService _firebaseStorageService;
+        private readonly IFlightResponsitory _flightRepo;
 
-        public DocumentController(IDocumentResponsitory documentRepo, IFirebaseStorageService firebaseStorageService)
+        public DocumentController(IDocumentResponsitory documentRepo, IFirebaseStorageService firebaseStorageService, IFlightResponsitory flightRepo)
         {
+            this._flightRepo = flightRepo;
             this._documentRepo = documentRepo;
             this._firebaseStorageService = firebaseStorageService;
         }
@@ -96,11 +98,13 @@ namespace FlightDocsSystem.Controllers
                 {
                     return BadRequest("No file selected.");
                 }
-
-                var docUrl = await _firebaseStorageService.UploadImage(docFile);
-                var coverUrl = await _firebaseStorageService.UploadImage(coverFile);
+                var fileName = Path.GetFileName(docFile.FileName);
+                var docUrl = await _firebaseStorageService.UploadFile(docFile, "0.1");
+                var coverUrl = await _firebaseStorageService.UploadFile(coverFile, null);
                 var model = new DocumentDTO
                 {
+                    DocumentName = fileName,
+                    DocumentVersion = "0.1",
                     DocumentPath = docUrl,
                     CoverPath = coverUrl,
                     FlightId = flightId,
@@ -108,6 +112,7 @@ namespace FlightDocsSystem.Controllers
                     DocumentTypeId = documentTypeId,
                     UserId = usedId
                 };
+
                 var newDocumentId = await _documentRepo.AddDocumentAsync(model);
                 var Document = await _documentRepo.GetDocumentByIdAsync(newDocumentId);
                 if (Document != null)
@@ -138,30 +143,55 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocument(int id, DocumentDTO model)
+        public async Task<IActionResult> UpdateDocument(IFormFile docFile, int documentId, int flightId, DateTime expirationDate, int documentTypeId, int usedId)
         {
             try
             {
-                if (id != model.DocumentId)
+                if (docFile == null || docFile.Length == 0)
                 {
-
-                    return NotFound(new ApiResponse
+                    return BadRequest("No file selected.");
+                }
+                var document = _documentRepo.GetDocumentByIdAsync(documentId);
+                if (document != null)
+                {
+                    var flight = await _flightRepo.GetFlightByIdAsync(flightId);
+                    if (flight.DepartureTime != null)
                     {
-                        Success = false,
-                        Message = "Update " + NAMECONTROLLER + " fail",
-                        Data = null
+                        return BadRequest(new ApiResponse
+                        {
+                            Success = false,
+                            Message = "Flight was end",
+                            Data = null
+                        });
+                    }
+                    var fileName = Path.GetFileName(docFile.FileName);
+                    var docUrl = await _firebaseStorageService.UploadFile(docFile, "0.1");
+                    var model = new DocumentDTO
+                    {
+                        DocumentName = fileName,
+                        DocumentVersion = "0.1",
+                        DocumentPath = docUrl,
+                        FlightId = flightId,
+                        ExpirationDate = expirationDate,
+                        DocumentTypeId = documentTypeId,
+                        UserId = usedId
+                    };
+                    await _documentRepo.UpdateDocumentAsync(document.Id, model);
+
+                    return Ok(new ApiResponse
+                    {
+                        Success = true,
+                        Message = "Get " + NAMECONTROLLER + " success",
+                        Data = document
                     });
                 }
-                await _documentRepo.UpdateDocumentAsync(id, model);
-                var Document = await _documentRepo.GetDocumentByIdAsync(id);
 
-                return Ok(new ApiResponse
+                return NotFound(new ApiResponse
                 {
-                    Success = true,
-                    Message = "Update " + NAMECONTROLLER + " success",
-                    Data = Document
+                    Success = false,
+                    Message = "Get " + NAMECONTROLLER + " fail",
+                    Data = null
                 });
-
             }
             catch (System.Exception e)
             {

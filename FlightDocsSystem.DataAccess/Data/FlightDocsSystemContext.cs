@@ -125,6 +125,7 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("create_at");
             entity.Property(e => e.DocumentPath).HasColumnName("document_path");
+            entity.Property(e => e.DocumentName).HasColumnName("document_name");
             entity.Property(e => e.DocumentTypeId).HasColumnName("document_type_id");
             entity.Property(e => e.DocumentVersion)
                 .HasMaxLength(100)

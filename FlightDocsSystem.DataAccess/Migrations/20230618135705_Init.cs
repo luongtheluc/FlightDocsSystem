@@ -80,6 +80,22 @@ namespace FlightDocsSystem.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Permission",
+                columns: table => new
+                {
+                    permission_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    permission_name = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
+                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
+                    update_at = table.Column<DateTime>(type: "datetime", nullable: true),
+                    note = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permission", x => x.permission_id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -92,35 +108,6 @@ namespace FlightDocsSystem.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__Roles__760965CC06F59FD5", x => x.role_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    user_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    username = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    password = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    phone = table.Column<string>(type: "varchar(11)", unicode: false, maxLength: 11, nullable: true),
-                    isActive = table.Column<bool>(type: "bit", nullable: true),
-                    userImage = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValueSql: "(N'')"),
-                    ResetTokenExpries = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VerifyAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValueSql: "(N'')"),
-                    RefreshTokenCreated = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "('0001-01-01T00:00:00.0000000')"),
-                    RefreshTokenExpries = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "('0001-01-01T00:00:00.0000000')"),
-                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    update_at = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Users__B9BE370F2CF8CC80", x => x.user_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -145,24 +132,110 @@ namespace FlightDocsSystem.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                name: "Documents",
                 columns: table => new
                 {
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    role_id = table.Column<int>(type: "int", nullable: false)
+                    document_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    flight_id = table.Column<int>(type: "int", nullable: true),
+                    document_path = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    document_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    cover_path = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    document_version = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    expiration_date = table.Column<DateTime>(type: "date", nullable: true),
+                    document_type_id = table.Column<int>(type: "int", nullable: true),
+                    passenger_id = table.Column<int>(type: "int", nullable: true),
+                    user_id = table.Column<int>(type: "int", nullable: true),
+                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
+                    update_at = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsConfirm = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK__Document__9666E8AC859AE755", x => x.document_id);
                     table.ForeignKey(
-                        name: "FK__UserRoles__role___5070F446",
+                        name: "FK_Documents_FlightDocumentTypes",
+                        column: x => x.document_type_id,
+                        principalTable: "FlightDocumentTypes",
+                        principalColumn: "document_type_id");
+                    table.ForeignKey(
+                        name: "FK_Documents_Passengers",
+                        column: x => x.passenger_id,
+                        principalTable: "Passengers",
+                        principalColumn: "passenger_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Group_permission",
+                columns: table => new
+                {
+                    group_id = table.Column<int>(type: "int", nullable: false),
+                    document_id = table.Column<int>(type: "int", nullable: true),
+                    role_id = table.Column<int>(type: "int", nullable: true),
+                    permission_id = table.Column<int>(type: "int", nullable: true),
+                    group_name = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true),
+                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
+                    update_at = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Group_permission", x => x.group_id);
+                    table.ForeignKey(
+                        name: "FK_Group_permission_Documents",
+                        column: x => x.document_id,
+                        principalTable: "Documents",
+                        principalColumn: "document_id");
+                    table.ForeignKey(
+                        name: "FK_Group_permission_Permission",
+                        column: x => x.permission_id,
+                        principalTable: "Permission",
+                        principalColumn: "permission_id");
+                    table.ForeignKey(
+                        name: "FK_Group_permission_Roles",
                         column: x => x.role_id,
                         principalTable: "Roles",
                         principalColumn: "role_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    user_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    username = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    password = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    phone = table.Column<string>(type: "varchar(11)", unicode: false, maxLength: 11, nullable: true),
+                    isActive = table.Column<bool>(type: "bit", nullable: true),
+                    userImage = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValueSql: "(N'')"),
+                    ResetTokenExpries = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VerifyAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValueSql: "(N'')"),
+                    RefreshTokenCreated = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "('0001-01-01T00:00:00.0000000')"),
+                    RefreshTokenExpries = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "('0001-01-01T00:00:00.0000000')"),
+                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
+                    update_at = table.Column<DateTime>(type: "datetime", nullable: true),
+                    group_id = table.Column<int>(type: "int", nullable: true),
+                    role_id = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__Users__B9BE370F2CF8CC80", x => x.user_id);
                     table.ForeignKey(
-                        name: "FK__UserRoles__user___4F7CD00D",
-                        column: x => x.user_id,
-                        principalTable: "Users",
-                        principalColumn: "user_id");
+                        name: "FK_Users_Group_permission",
+                        column: x => x.group_id,
+                        principalTable: "Group_permission",
+                        principalColumn: "group_id");
+                    table.ForeignKey(
+                        name: "FK_Users_Roles",
+                        column: x => x.role_id,
+                        principalTable: "Roles",
+                        principalColumn: "role_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -204,47 +277,6 @@ namespace FlightDocsSystem.DataAccess.Migrations
                         column: x => x.aircraft_id,
                         principalTable: "Aircrafts",
                         principalColumn: "aircraft_id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Documents",
-                columns: table => new
-                {
-                    document_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    flight_id = table.Column<int>(type: "int", nullable: true),
-                    document_type = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    document_number = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    expiration_date = table.Column<DateTime>(type: "date", nullable: true),
-                    document_type_id = table.Column<int>(type: "int", nullable: true),
-                    passenger_id = table.Column<int>(type: "int", nullable: true),
-                    user_id = table.Column<int>(type: "int", nullable: true),
-                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    update_at = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Document__9666E8AC859AE755", x => x.document_id);
-                    table.ForeignKey(
-                        name: "FK_Documents_FlightDocumentTypes",
-                        column: x => x.document_type_id,
-                        principalTable: "FlightDocumentTypes",
-                        principalColumn: "document_type_id");
-                    table.ForeignKey(
-                        name: "FK_Documents_Passengers",
-                        column: x => x.passenger_id,
-                        principalTable: "Passengers",
-                        principalColumn: "passenger_id");
-                    table.ForeignKey(
-                        name: "FK_Documents_Users",
-                        column: x => x.user_id,
-                        principalTable: "Users",
-                        principalColumn: "user_id");
-                    table.ForeignKey(
-                        name: "FK__Documents__fligh__44FF419A",
-                        column: x => x.flight_id,
-                        principalTable: "Flights",
-                        principalColumn: "flight_id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -293,24 +325,70 @@ namespace FlightDocsSystem.DataAccess.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_role_id",
-                table: "UserRoles",
+                name: "IX_Group_permission_document_id",
+                table: "Group_permission",
+                column: "document_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Group_permission_permission_id",
+                table: "Group_permission",
+                column: "permission_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Group_permission_role_id",
+                table: "Group_permission",
                 column: "role_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_user_id",
-                table: "UserRoles",
-                column: "user_id");
+                name: "IX_Users_group_id",
+                table: "Users",
+                column: "group_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_role_id",
+                table: "Users",
+                column: "role_id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Documents_Users",
+                table: "Documents",
+                column: "user_id",
+                principalTable: "Users",
+                principalColumn: "user_id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK__Documents__fligh__44FF419A",
+                table: "Documents",
+                column: "flight_id",
+                principalTable: "Flights",
+                principalColumn: "flight_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Documents");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Aircrafts_AircraftTypes",
+                table: "Aircrafts");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Documents_FlightDocumentTypes",
+                table: "Documents");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Documents_Passengers",
+                table: "Documents");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Documents_Users",
+                table: "Documents");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Flights_Users",
+                table: "Flights");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
+                name: "AircraftTypes");
 
             migrationBuilder.DropTable(
                 name: "FlightDocumentTypes");
@@ -319,22 +397,28 @@ namespace FlightDocsSystem.DataAccess.Migrations
                 name: "Passengers");
 
             migrationBuilder.DropTable(
-                name: "Flights");
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Group_permission");
+
+            migrationBuilder.DropTable(
+                name: "Documents");
+
+            migrationBuilder.DropTable(
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
+                name: "Flights");
+
+            migrationBuilder.DropTable(
                 name: "Airports");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Aircrafts");
-
-            migrationBuilder.DropTable(
-                name: "AircraftTypes");
         }
     }
 }
