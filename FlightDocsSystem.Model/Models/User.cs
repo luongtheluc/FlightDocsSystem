@@ -41,7 +41,15 @@ public partial class User
 
     public DateTime? UpdateAt { get; set; }
 
+    public int? GroupId { get; set; }
+
+    public int? RoleId { get; set; }
+
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
     public virtual ICollection<Flight> Flights { get; set; } = new List<Flight>();
+
+    public virtual GroupPermission? Group { get; set; }
+
+    public virtual Role? Role { get; set; }
 }

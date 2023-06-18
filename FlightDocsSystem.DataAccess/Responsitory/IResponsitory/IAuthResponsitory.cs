@@ -15,11 +15,11 @@ namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
         public Task<User> CheckVerifyTokenAsync(string token);
         public Task<bool> CheckUserNameAsync(string username);
         public Task<User> CheckLoginAsync(string password, string username);
-        public Task<string> GetUserRole(User user);
         public Task UpdateUserAsync(User user);
         Task<User> CheckEmailAsync(string email);
         Task<User> CheckPasswordResetTokenAsync(string token);
         public Task<int> CheckRefreshToken(string token);
         Task<User> GetUserByRefreshToken(string token);
+        Task<User> GetUserByAccessToken(string token, string secretKey);
     }
 }

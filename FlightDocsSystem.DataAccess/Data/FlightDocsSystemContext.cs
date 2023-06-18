@@ -28,16 +28,18 @@ public partial class FlightDocsSystemContext : DbContext
 
     public virtual DbSet<FlightDocumentType>? FlightDocumentTypes { get; set; }
 
+    public virtual DbSet<GroupPermission>? GroupPermissions { get; set; }
+
     public virtual DbSet<Passenger>? Passengers { get; set; }
+
+    public virtual DbSet<Permission>? Permissions { get; set; }
 
     public virtual DbSet<Role>? Roles { get; set; }
 
-
     public virtual DbSet<User>? Users { get; set; }
 
-    public virtual DbSet<UserRole>? UserRoles { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
         => optionsBuilder.UseSqlServer("Data Source=THELUC;Initial Catalog=FlightDocsSystem;Integrated Security=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -118,22 +120,16 @@ public partial class FlightDocsSystemContext : DbContext
             entity.HasKey(e => e.DocumentId).HasName("PK__Document__9666E8AC859AE755");
 
             entity.Property(e => e.DocumentId).HasColumnName("document_id");
+            entity.Property(e => e.CoverPath).HasColumnName("cover_path");
             entity.Property(e => e.CreateAt)
                 .HasColumnType("datetime")
                 .HasColumnName("create_at");
+            entity.Property(e => e.DocumentPath).HasColumnName("document_path");
+            entity.Property(e => e.DocumentTypeId).HasColumnName("document_type_id");
             entity.Property(e => e.DocumentVersion)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("document_version");
-            entity.Property(e => e.DocumentPath)
-                .HasMaxLength(int.MaxValue)
-                .IsUnicode(true)
-                .HasColumnName("document_path");
-            entity.Property(e => e.CoverPath)
-                .HasMaxLength(int.MaxValue)
-                .HasColumnName("cover_path");
-            entity.Property(e => e.IsConfirm).HasColumnName("IsConfirm");
-            entity.Property(e => e.DocumentTypeId).HasColumnName("document_type_id");
             entity.Property(e => e.ExpirationDate)
                 .HasColumnType("date")
                 .HasColumnName("expiration_date");
@@ -144,7 +140,7 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasColumnName("update_at");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.DocumentTypeNavigation).WithMany(p => p.Documents)
+            entity.HasOne(d => d.DocumentType).WithMany(p => p.Documents)
                 .HasForeignKey(d => d.DocumentTypeId)
                 .HasConstraintName("FK_Documents_FlightDocumentTypes");
 
@@ -221,6 +217,42 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasColumnName("update_at");
         });
 
+        modelBuilder.Entity<GroupPermission>(entity =>
+        {
+            entity.HasKey(e => e.GroupId);
+
+            entity.ToTable("Group_permission");
+
+            entity.Property(e => e.GroupId)
+                .ValueGeneratedNever()
+                .HasColumnName("group_id");
+            entity.Property(e => e.CreateAt)
+                .HasColumnType("datetime")
+                .HasColumnName("create_at");
+            entity.Property(e => e.DocumentId).HasColumnName("document_id");
+            entity.Property(e => e.GroupName)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("group_name");
+            entity.Property(e => e.PermissionId).HasColumnName("permission_id");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.UpdateAt)
+                .HasColumnType("datetime")
+                .HasColumnName("update_at");
+
+            entity.HasOne(d => d.Document).WithMany(p => p.GroupPermissions)
+                .HasForeignKey(d => d.DocumentId)
+                .HasConstraintName("FK_Group_permission_Documents");
+
+            entity.HasOne(d => d.Permission).WithMany(p => p.GroupPermissions)
+                .HasForeignKey(d => d.PermissionId)
+                .HasConstraintName("FK_Group_permission_Permission");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.GroupPermissions)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK_Group_permission_Roles");
+        });
+
         modelBuilder.Entity<Passenger>(entity =>
         {
             entity.HasKey(e => e.PassengerId).HasName("PK__Passenge__03764586308DB9B2");
@@ -244,6 +276,27 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("last_name");
+            entity.Property(e => e.UpdateAt)
+                .HasColumnType("datetime")
+                .HasColumnName("update_at");
+        });
+
+        modelBuilder.Entity<Permission>(entity =>
+        {
+            entity.ToTable("Permission");
+
+            entity.Property(e => e.PermissionId).HasColumnName("permission_id");
+            entity.Property(e => e.CreateAt)
+                .HasColumnType("datetime")
+                .HasColumnName("create_at");
+            entity.Property(e => e.Note)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("note");
+            entity.Property(e => e.PermissionName)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("permission_name");
             entity.Property(e => e.UpdateAt)
                 .HasColumnType("datetime")
                 .HasColumnName("update_at");
@@ -281,6 +334,7 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("email");
+            entity.Property(e => e.GroupId).HasColumnName("group_id");
             entity.Property(e => e.IsActive).HasColumnName("isActive");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
@@ -297,6 +351,7 @@ public partial class FlightDocsSystemContext : DbContext
             entity.Property(e => e.RefreshToken).HasDefaultValueSql("(N'')");
             entity.Property(e => e.RefreshTokenCreated).HasDefaultValueSql("('0001-01-01T00:00:00.0000000')");
             entity.Property(e => e.RefreshTokenExpries).HasDefaultValueSql("('0001-01-01T00:00:00.0000000')");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.UpdateAt)
                 .HasColumnType("datetime")
                 .HasColumnName("update_at");
@@ -308,24 +363,14 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("username");
-        });
 
-        modelBuilder.Entity<UserRole>(entity =>
-        {
-            entity.HasKey(e => e.Id);
+            entity.HasOne(d => d.Group).WithMany(p => p.Users)
+                .HasForeignKey(d => d.GroupId)
+                .HasConstraintName("FK_Users_Group_permission");
 
-            entity.Property(e => e.RoleId).HasColumnName("role_id");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.Role).WithMany()
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UserRoles__role___5070F446");
-
-            entity.HasOne(d => d.User).WithMany()
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UserRoles__user___4F7CD00D");
+                .HasConstraintName("FK_Users_Roles");
         });
 
         OnModelCreatingPartial(modelBuilder);

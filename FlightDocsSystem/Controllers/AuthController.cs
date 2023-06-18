@@ -202,6 +202,45 @@ namespace FlightDocsSystem.Controllers
                 Data = null
             });
         }
+        [HttpPost("access-token")]
+        public async Task<IActionResult> GetUserByAccessToken(string token)
+        {
+            if (token != null)
+            {
+                var secretKey = _configuration.GetValue<string>("AppSettings:Token");
+                var user = await _authRepo.GetUserByAccessToken(token, secretKey!);
+                if (user != null)
+                {
+                    return Ok(new ApiResponse
+                    {
+                        Success = true,
+                        Message = "get user success",
+                        Data = user
+                    });
+                }
+                else
+                {
+                    return BadRequest(new ApiResponse
+                    {
+                        Success = false,
+                        Message = "User not found",
+                        Data = null
+                    });
+                }
+
+            }
+            else
+            {
+                return NotFound(new ApiResponse
+                {
+                    Success = false,
+                    Message = "Token not found",
+                    Data = null
+                });
+            }
+
+        }
+
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(string token, string password)
         {

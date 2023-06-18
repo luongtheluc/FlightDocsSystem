@@ -40,11 +40,27 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             }
         }
 
-        public async Task<List<DocumentDTO>> GetAllDocumentAsync()
+        public async Task<List<DocumentDTO>> GetAllDocumentAsync(int currentPage = 1, int pageSize = 5, string? searchKeyword = null)
         {
-            var getAll = await _context.Documents!.ToListAsync();
-            return _mapper.Map<List<DocumentDTO>>(getAll);
+            IQueryable<Document> query = _context.Documents!;
+
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                query = query.Where(d => d.DocumentPath!.Contains(searchKeyword));
+            }
+
+            var totalItems = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            var documents = await query
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return _mapper.Map<List<DocumentDTO>>(documents);
         }
+
+
 
         public async Task<DocumentDTO> GetDocumentByIdAsync(int id)
         {

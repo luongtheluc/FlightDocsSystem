@@ -20,5 +20,4 @@ public partial class Passenger
     public DateTime? UpdateAt { get; set; }
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
-
 }

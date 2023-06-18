@@ -11,6 +11,10 @@ using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models;
 using FlightDocsSystem.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FlightDocsSystem.DataAccess.Responsitory
 {
@@ -89,11 +93,6 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             return user!;
         }
 
-        public async Task<string> GetUserRole(User user)
-        {
-            var roles = await _context.UserRoles!.Where(p => p.UserId == user.UserId).FirstOrDefaultAsync();
-            return roles!.Role.RoleName!;
-        }
 
         public async Task UpdateUserAsync(User user)
         {
@@ -127,7 +126,35 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             }
         }
 
+        public async Task<User> GetUserByAccessToken(string token, string secretKey)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
 
+            ClaimsPrincipal claimsPrincipal;
+            try
+            {
+                claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out _);
+            }
+            catch
+            {
+                return null!;
+            }
+
+            var name = claimsPrincipal.FindFirst(ClaimTypes.Name)?.Value;
+            var role = claimsPrincipal.FindFirst(ClaimTypes.Role)?.Value;
+            var email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value;
+
+            var user = await _context.Users!.FirstOrDefaultAsync(u => u.Email == email);
+            return user!;
+
+        }
     }
 
 

@@ -12,4 +12,8 @@ public partial class Role
     public DateTime? CreateAt { get; set; }
 
     public DateTime? UpdateAt { get; set; }
+
+    public virtual ICollection<GroupPermission> GroupPermissions { get; set; } = new List<GroupPermission>();
+
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

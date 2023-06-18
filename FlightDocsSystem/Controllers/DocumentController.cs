@@ -29,11 +29,13 @@ namespace FlightDocsSystem.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDocument()
+        public async Task<IActionResult> GetAllDocument(string? searchKeyword)
         {
             try
             {
-                var Documents = await _documentRepo.GetAllDocumentAsync();
+                var currentPage = 1;
+                var pageSize = 5;
+                var Documents = await _documentRepo.GetAllDocumentAsync(currentPage, pageSize, searchKeyword);
                 return Ok(new ApiResponse
                 {
                     Success = true,

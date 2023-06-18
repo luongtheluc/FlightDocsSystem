@@ -63,15 +63,6 @@ namespace FlightDocsSystem.DataAccess.Responsitory
             }
         }
 
-        public async Task AddUserRole(UserRoleDTO userRoleDTO)
-        {
-            if (userRoleDTO != null)
-            {
-                var addUserRole = _mapper.Map<UserRole>(userRoleDTO);
-                _context.UserRoles!.Add(addUserRole);
-                await _context.SaveChangesAsync();
-            }
-        }
 
         public async Task<int> GetUserRoleAsync()
         {

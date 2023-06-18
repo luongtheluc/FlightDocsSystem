@@ -23,7 +23,6 @@ namespace FlightDocsSystem.Helper
             CreateMap<Passenger, PassengerDTO>().ReverseMap();
             CreateMap<Role, RoleDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<UserRole, UserRoleDTO>().ReverseMap();
 
         }
     }

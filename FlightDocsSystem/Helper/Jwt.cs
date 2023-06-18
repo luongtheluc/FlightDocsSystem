@@ -19,11 +19,9 @@ namespace FlightDocsSystem.Helper
         {
             List<Claim> claims = new List<Claim>{
                 new Claim(ClaimTypes.Name, user.Username!),
-                new Claim(ClaimTypes.Role, role )
+                new Claim(ClaimTypes.Role, role ),
+                new Claim(ClaimTypes.Email, user.Email!),
             };
-            // var secretKey = "your_secret_key_here";
-            // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -60,7 +58,6 @@ namespace FlightDocsSystem.Helper
     {
         public string? Token { get; set; }
         public DateTime Created { get; set; }
-
         public DateTime Expired { get; set; }
 
     }

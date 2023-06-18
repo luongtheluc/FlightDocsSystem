@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
 using FlightDocsSystem.Helper;
-using FlightDocsSystem.Models.DTOs;
+using FlightDocsSystem.Model.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,29 +13,29 @@ namespace FlightDocsSystem.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class RoleController : ControllerBase
+    public class GroupController : ControllerBase
     {
-        private readonly IRoleResponsitory _roleRepo;
+        private readonly IGroupPermissionResponsitory _groupRepo;
 
-        public RoleController(IRoleResponsitory RoleTypeRepo)
+        public GroupController(IGroupPermissionResponsitory groupPermissionResponsitory)
         {
-            _roleRepo = RoleTypeRepo;
+            _groupRepo = groupPermissionResponsitory;
         }
 
-        const string NAMECONTROLLER = "Role"; //hien thi ten cua thong bao
+        const string NAMECONTROLLER = "Group Permission"; //hien thi ten cua thong bao
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllRoleType()
+        public async Task<IActionResult> GetAllGroupPermissionType()
         {
             try
             {
-                var Roles = await _roleRepo.GetAllRoleAsync();
+                var GroupPermissions = await _groupRepo.GetAllGroupPermissionAsync();
                 return Ok(new ApiResponse
                 {
                     Success = true,
                     Message = "Get all " + NAMECONTROLLER + " success",
-                    Data = Roles
+                    Data = GroupPermissions
                 });
             }
             catch (System.Exception e)
@@ -50,18 +50,18 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRoleTypeById(int id)
+        public async Task<IActionResult> GetGroupPermissionTypeById(int id)
         {
             try
             {
-                var Role = await _roleRepo.GetRoleByIdAsync(id);
-                if (Role != null)
+                var GroupPermission = await _groupRepo.GetGroupPermissionByIdAsync(id);
+                if (GroupPermission != null)
                 {
                     return Ok(new ApiResponse
                     {
                         Success = true,
                         Message = "Get " + NAMECONTROLLER + " success",
-                        Data = Role
+                        Data = GroupPermission
                     });
                 }
                 return NotFound(new ApiResponse
@@ -83,19 +83,19 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRoleType(RoleDTO model)
+        public async Task<IActionResult> AddGroupPermissionType(GroupPermissionDTO model)
         {
             try
             {
-                var newRoleId = await _roleRepo.AddRoleAsync(model);
-                var Role = await _roleRepo.GetRoleByIdAsync(newRoleId);
-                if (Role != null)
+                var newGroupPermissionId = await _groupRepo.AddGroupPermissionAsync(model);
+                var GroupPermission = await _groupRepo.GetGroupPermissionByIdAsync(newGroupPermissionId);
+                if (GroupPermission != null)
                 {
                     return Ok(new ApiResponse
                     {
                         Success = true,
                         Message = "Get " + NAMECONTROLLER + " success",
-                        Data = Role
+                        Data = GroupPermission
                     });
                 }
                 return NotFound(new ApiResponse
@@ -117,11 +117,11 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateRoleType(int id, RoleDTO model)
+        public async Task<IActionResult> UpdateGroupPermissionType(int id, GroupPermissionDTO model)
         {
             try
             {
-                if (id != model.RoleId)
+                if (id != model.GroupId)
                 {
 
                     return NotFound(new ApiResponse
@@ -131,14 +131,14 @@ namespace FlightDocsSystem.Controllers
                         Data = null
                     });
                 }
-                await _roleRepo.UpdateRoleAsync(id, model);
-                var Role = await _roleRepo.GetRoleByIdAsync(id);
+                await _groupRepo.UpdateGroupPermissionAsync(id, model);
+                var GroupPermission = await _groupRepo.GetGroupPermissionByIdAsync(id);
 
                 return Ok(new ApiResponse
                 {
                     Success = true,
                     Message = "Update " + NAMECONTROLLER + " success",
-                    Data = Role
+                    Data = GroupPermission
                 });
 
             }
@@ -153,14 +153,13 @@ namespace FlightDocsSystem.Controllers
             }
         }
 
-
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRoleType([FromRoute] int id)
+        public async Task<IActionResult> DeleteGroupPermissionType([FromRoute] int id)
         {
             try
             {
-                var Role = await _roleRepo.GetRoleByIdAsync(id);
-                if (Role == null)
+                var GroupPermission = await _groupRepo.GetGroupPermissionByIdAsync(id);
+                if (GroupPermission == null)
                 {
                     return NotFound(new ApiResponse
                     {
@@ -170,7 +169,7 @@ namespace FlightDocsSystem.Controllers
                     });
                 }
 
-                await _roleRepo.DeleteRoleAsync(id);
+                await _groupRepo.DeleteGroupPermissionAsync(id);
                 return Ok(new ApiResponse
                 {
                     Success = true,

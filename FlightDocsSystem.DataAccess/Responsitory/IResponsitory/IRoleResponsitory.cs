@@ -13,7 +13,6 @@ namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
         public Task<int> AddRoleAsync(RoleDTO model);
         public Task UpdateRoleAsync(int id, RoleDTO model);
         public Task DeleteRoleAsync(int id);
-        public Task AddUserRole(UserRoleDTO userRoleDTO);
         public Task<int> GetUserRoleAsync();
     }
 }

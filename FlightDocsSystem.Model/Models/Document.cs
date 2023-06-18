@@ -10,10 +10,10 @@ public partial class Document
     public int? FlightId { get; set; }
 
     public string? DocumentPath { get; set; }
+
     public string? CoverPath { get; set; }
 
     public string? DocumentVersion { get; set; }
-    public bool? IsConfirm { get; set; }
 
     public DateTime? ExpirationDate { get; set; }
 
@@ -27,9 +27,13 @@ public partial class Document
 
     public DateTime? UpdateAt { get; set; }
 
-    public virtual FlightDocumentType? DocumentTypeNavigation { get; set; }
+    public bool? IsConfirm { get; set; }
+
+    public virtual FlightDocumentType? DocumentType { get; set; }
 
     public virtual Flight? Flight { get; set; }
+
+    public virtual ICollection<GroupPermission> GroupPermissions { get; set; } = new List<GroupPermission>();
 
     public virtual Passenger? Passenger { get; set; }
 

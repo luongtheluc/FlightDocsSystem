@@ -9,7 +9,7 @@ namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
 {
     public interface IDocumentResponsitory
     {
-        public Task<List<DocumentDTO>> GetAllDocumentAsync();
+        public Task<List<DocumentDTO>> GetAllDocumentAsync(int currentPage, int pageSize, string? searchKeyword = null);
         public Task<DocumentDTO> GetDocumentByIdAsync(int id);
         public Task<int> AddDocumentAsync(DocumentDTO model);
         public Task UpdateDocumentAsync(int id, DocumentDTO model);
