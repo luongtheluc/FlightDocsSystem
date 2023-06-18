@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlightDocsSystem.Models.DTOs;
 
-namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
+namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
     public interface IRoleResponsitory
     {

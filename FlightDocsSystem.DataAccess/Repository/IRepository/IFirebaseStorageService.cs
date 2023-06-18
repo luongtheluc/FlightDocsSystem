@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
+namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
     public interface IFirebaseStorageService
     {

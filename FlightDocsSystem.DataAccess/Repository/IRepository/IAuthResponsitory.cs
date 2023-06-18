@@ -6,7 +6,7 @@ using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models;
 using FlightDocsSystem.Models.DTOs;
 
-namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
+namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
     public interface IAuthResponsitory
     {

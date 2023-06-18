@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FlightDocsSystem.DataAccess.Data;
-using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
+using FlightDocsSystem.DataAccess.Repository.IRepository;
 using FlightDocsSystem.Model;
 using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models;
 using FlightDocsSystem.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlightDocsSystem.DataAccess.Responsitory
+namespace FlightDocsSystem.DataAccess.Repository
 {
     public class FlightDocumentTypeResponsitory : IFlightDocumentTypeResponsitory
     {
@@ -21,7 +21,7 @@ namespace FlightDocsSystem.DataAccess.Responsitory
         public FlightDocumentTypeResponsitory(IMapper mapper, FlightDocsSystemContext context)
         {
             _mapper = mapper;
-            this._context = context;
+            _context = context;
         }
 
         public async Task<int> AddFlightDocumentTypeAsync(FlightDocumentTypeDTO model)

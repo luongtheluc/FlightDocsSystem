@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
+using FlightDocsSystem.DataAccess.Repository.IRepository;
 using FlightDocsSystem.Helper;
 using FlightDocsSystem.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -17,16 +17,16 @@ namespace FlightDocsSystem.Controllers
     {
         private readonly IRoleResponsitory _roleRepo;
 
-        public RoleController(IRoleResponsitory RoleTypeRepo)
+        public RoleController(IRoleResponsitory RoleRepo)
         {
-            _roleRepo = RoleTypeRepo;
+            _roleRepo = RoleRepo;
         }
 
         const string NAMECONTROLLER = "Role"; //hien thi ten cua thong bao
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllRoleType()
+        public async Task<IActionResult> GetAllRole()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRoleTypeById(int id)
+        public async Task<IActionResult> GetRoleById(int id)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRoleType(RoleDTO model)
+        public async Task<IActionResult> AddRole(RoleDTO model)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace FlightDocsSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateRoleType(int id, RoleDTO model)
+        public async Task<IActionResult> UpdateRole(int id, RoleDTO model)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace FlightDocsSystem.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRoleType([FromRoute] int id)
+        public async Task<IActionResult> DeleteRole([FromRoute] int id)
         {
             try
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FlightDocsSystem.Model.DTOs;
 using FlightDocsSystem.Models.DTOs;
 
-namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
+namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
     public interface IAircraftTypeResponsitory
     {

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FlightDocsSystem.DataAccess.Data;
-using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
+using FlightDocsSystem.DataAccess.Repository.IRepository;
 using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlightDocsSystem.DataAccess.Responsitory
+namespace FlightDocsSystem.DataAccess.Repository
 {
     public class DocumentResponsitory : IDocumentResponsitory
     {
@@ -19,7 +19,7 @@ namespace FlightDocsSystem.DataAccess.Responsitory
         public DocumentResponsitory(IMapper mapper, FlightDocsSystemContext context)
         {
             _mapper = mapper;
-            this._context = context;
+            _context = context;
         }
 
         public async Task<int> AddDocumentAsync(DocumentDTO model)
@@ -46,7 +46,7 @@ namespace FlightDocsSystem.DataAccess.Responsitory
 
             if (!string.IsNullOrEmpty(searchKeyword))
             {
-                query = query.Where(d => d.DocumentPath!.Contains(searchKeyword));
+                query = query.Where(d => d.DocumentName!.Contains(searchKeyword));
             }
 
             var totalItems = await query.CountAsync();
@@ -59,8 +59,6 @@ namespace FlightDocsSystem.DataAccess.Responsitory
 
             return _mapper.Map<List<DocumentDTO>>(documents);
         }
-
-
 
         public async Task<DocumentDTO> GetDocumentByIdAsync(int id)
         {

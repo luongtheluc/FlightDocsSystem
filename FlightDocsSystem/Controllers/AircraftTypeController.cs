@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
+using FlightDocsSystem.DataAccess.Repository.IRepository;
 using FlightDocsSystem.Helper;
 using FlightDocsSystem.Model.DTOs;
 using FlightDocsSystem.Models.DTOs;

@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using FlightDocsSystem.DataAccess.Data;
-using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
-using FlightDocsSystem.Model;
+using FlightDocsSystem.DataAccess.Repository.IRepository;
 using FlightDocsSystem.Model.DTOs;
 using FlightDocsSystem.Model.Models;
-using FlightDocsSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlightDocsSystem.DataAccess.Responsitory
+namespace FlightDocsSystem.DataAccess.Repository
 {
     public class AircraftResponsitory : IAircraftResponsitory
     {
@@ -20,8 +14,8 @@ namespace FlightDocsSystem.DataAccess.Responsitory
 
         public AircraftResponsitory(FlightDocsSystemContext context, IMapper mapper)
         {
-            this._context = context;
-            this._mapper = mapper;
+            _context = context;
+            _mapper = mapper;
 
         }
 

@@ -1,4 +1,4 @@
-﻿using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
+﻿using FlightDocsSystem.DataAccess.Repository.IRepository;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace FlightDocsSystem.DataAccess.Responsitory
+namespace FlightDocsSystem.DataAccess.Repository
 {
     public class FirebaseStorageService : IFirebaseStorageService
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FlightDocsSystem.Model.DTOs;
 
-namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
+namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
     public interface IAircraftResponsitory
     {

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlightDocsSystem.Model.DTOs;
 
-namespace FlightDocsSystem.DataAccess.Responsitory.IResponsitory
-{
+namespace FlightDocsSystem.DataAccess.Repository.IRepository
+{   
     public interface IGroupPermissionResponsitory
     {
         public Task<List<GroupPermissionDTO>> GetAllGroupPermissionAsync();

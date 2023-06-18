@@ -1,8 +1,7 @@
 using System.Text;
 using FlightDocsSystem.DataAccess.Data;
-using FlightDocsSystem.DataAccess.Responsitory;
-using FlightDocsSystem.DataAccess.Responsitory.IResponsitory;
-using FlightDocsSystem.Model;
+using FlightDocsSystem.DataAccess.Repository;
+using FlightDocsSystem.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
