@@ -9,10 +9,6 @@ namespace FlightDocsSystem.DataAccess.Repository
 {
     public class SendMailRepository : ISendMailRepository
     {
-        public SendMailRepository()
-        {
-
-        }
 
         public async Task SendEmailAsync(EmailDTO request, string filepath = null!)
         {

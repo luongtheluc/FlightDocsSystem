@@ -176,7 +176,7 @@ public partial class FlightDocsSystemContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("departure_time");
             entity.Property(e => e.FlightNumber)
-                .HasMaxLength(10)
+                .HasMaxLength(150)
                 .IsUnicode(false)
                 .HasColumnName("flight_number");
             entity.Property(e => e.UpdateAt)
@@ -225,7 +225,7 @@ public partial class FlightDocsSystemContext : DbContext
             entity.ToTable("Group_permission");
 
             entity.Property(e => e.GroupId)
-                .ValueGeneratedNever()
+
                 .HasColumnName("group_id");
             entity.Property(e => e.CreateAt)
                 .HasColumnType("datetime")

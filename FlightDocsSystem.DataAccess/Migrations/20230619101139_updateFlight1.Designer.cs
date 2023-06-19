@@ -4,6 +4,7 @@ using FlightDocsSystem.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightDocsSystem.DataAccess.Migrations
 {
     [DbContext(typeof(FlightDocsSystemContext))]
-    partial class FlightDocsSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20230619101139_updateFlight1")]
+    partial class updateFlight1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
 
                     b.HasIndex("AircraftTypeId");
 
-                    b.ToTable("Aircrafts", (string)null);
+                    b.ToTable("Aircrafts");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.AircraftType", b =>
@@ -92,7 +95,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
 
                     b.HasKey("AircraftTypeId");
 
-                    b.ToTable("AircraftTypes", (string)null);
+                    b.ToTable("AircraftTypes");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.Airport", b =>
@@ -139,7 +142,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
                     b.HasKey("AirportId")
                         .HasName("PK__Airports__C795D516759AC957");
 
-                    b.ToTable("Airports", (string)null);
+                    b.ToTable("Airports");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.Document", b =>
@@ -211,7 +214,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Documents", (string)null);
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.Flight", b =>
@@ -272,7 +275,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Flights", (string)null);
+                    b.ToTable("Flights");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.FlightDocumentType", b =>
@@ -300,7 +303,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
 
                     b.HasKey("DocumentTypeId");
 
-                    b.ToTable("FlightDocumentTypes", (string)null);
+                    b.ToTable("FlightDocumentTypes");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.GroupPermission", b =>
@@ -388,7 +391,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
                     b.HasKey("PassengerId")
                         .HasName("PK__Passenge__03764586308DB9B2");
 
-                    b.ToTable("Passengers", (string)null);
+                    b.ToTable("Passengers");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.Permission", b =>
@@ -451,7 +454,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
                     b.HasKey("RoleId")
                         .HasName("PK__Roles__760965CC06F59FD5");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.User", b =>
@@ -559,7 +562,7 @@ namespace FlightDocsSystem.DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("FlightDocsSystem.Model.Models.Aircraft", b =>

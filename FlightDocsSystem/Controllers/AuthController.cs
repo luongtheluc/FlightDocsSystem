@@ -43,6 +43,8 @@ namespace FlightDocsSystem.Controllers
                     });
                 }
                 var user = await _authRepo.GetUserByIdAsync(addUser);
+                user.RoleId = 2;
+                await _authRepo.UpdateUserAsync(user);
                 if (user != null)
                 {
                     // var userrole = new UserRoleDTO
@@ -111,6 +113,7 @@ namespace FlightDocsSystem.Controllers
                             user.RefreshToken = refreshToken.Token;
                             user.RefreshTokenCreated = refreshToken.Created;
                             user.RefreshTokenExpries = refreshToken.Expired;
+
                             await _authRepo.UpdateUserAsync(user);
                             return Ok(new ApiResponse
                             {

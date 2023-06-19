@@ -1,13 +1,15 @@
 using FlightDocsSystem.DataAccess.Repository.IRepository;
 using FlightDocsSystem.Helper;
+using FlightDocsSystem.Model.Models;
 using FlightDocsSystem.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocsSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentRepository _documentRepo;
@@ -144,7 +146,7 @@ namespace FlightDocsSystem.Controllers
                 {
                     return BadRequest("No file selected.");
                 }
-                var document = _documentRepo.GetDocumentByIdAsync(documentId);
+                var document = await _documentRepo.GetDocumentByIdAsync(documentId);
                 if (document != null)
                 {
                     var flight = await _flightRepo.GetFlightByIdAsync(flightId);
@@ -158,24 +160,26 @@ namespace FlightDocsSystem.Controllers
                         });
                     }
                     var fileName = Path.GetFileName(docFile.FileName);
-                    var docUrl = await _firebaseStorageService.UploadFile(docFile, "0.1");
+                    float parsedVersion = float.Parse(document.DocumentVersion!);
+                    var version = (parsedVersion + 0.1).ToString("0.00");
+                    var docUrl = await _firebaseStorageService.UploadFile(docFile, version);
                     var model = new DocumentDTO
                     {
-                        DocumentName = fileName,
-                        DocumentVersion = "0.1",
+                        DocumentName = fileName + "_" + version,
+                        DocumentVersion = version,
                         DocumentPath = docUrl,
                         FlightId = flightId,
                         ExpirationDate = expirationDate,
                         DocumentTypeId = documentTypeId,
                         UserId = usedId
                     };
-                    await _documentRepo.UpdateDocumentAsync(document.Id, model);
+                    await _documentRepo.UpdateDocumentAsync(document.DocumentId, model);
 
                     return Ok(new ApiResponse
                     {
                         Success = true,
                         Message = "Update " + NAMECONTROLLER + " success",
-                        Data = document
+                        Data = model
                     });
                 }
 
