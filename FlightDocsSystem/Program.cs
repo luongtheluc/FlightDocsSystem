@@ -47,17 +47,18 @@ builder.Services.AddDbContext<FlightDocsSystemContext>(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddScoped<IAircraftResponsitory, AircraftResponsitory>();
-builder.Services.AddScoped<IAircraftTypeResponsitory, AircraftTypesResponsitory>();
-builder.Services.AddScoped<IAirportResponsitory, AirportResponsitory>();
-builder.Services.AddScoped<IDocumentResponsitory, DocumentResponsitory>();
-builder.Services.AddScoped<IFlightResponsitory, FlightResponsitory>();
-builder.Services.AddScoped<IFlightDocumentTypeResponsitory, FlightDocumentTypeResponsitory>();
-builder.Services.AddScoped<IPassengerResponsitory, PassengerResponsitory>();
-builder.Services.AddScoped<IRoleResponsitory, RoleResponsitory>();
-builder.Services.AddScoped<IAuthResponsitory, AuthResponsitory>();
-builder.Services.AddScoped<IGroupPermissionResponsitory, GroupPermissionResponsitory>();
-builder.Services.AddScoped<IFirebaseStorageService, FirebaseStorageService>();
+builder.Services.AddScoped<IAircraftRepository, AircraftRepository>();
+builder.Services.AddScoped<IAircraftTypeRepository, AircraftTypesResponsitory>();
+builder.Services.AddScoped<IAirportRepository, AirportRepository>();
+builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
+builder.Services.AddScoped<IFlightRepository, FlightRepository>();
+builder.Services.AddScoped<IFlightDocumentTypeRepository, FlightDocumentTypeRepository>();
+builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IGroupPermissionRepository, GroupPermissionRepository>();
+builder.Services.AddScoped<ISendMailRepository, SendMailRepository>();
+builder.Services.AddScoped<IFirebaseStorageRepository, FirebaseStorageRepository>();
 
 
 var app = builder.Build();

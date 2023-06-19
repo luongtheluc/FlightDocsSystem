@@ -15,9 +15,9 @@ namespace FlightDocsSystem.Controllers
     [Authorize]
     public class DocumentTypeController : ControllerBase
     {
-        private readonly IFlightDocumentTypeResponsitory _flightDocumentTypeRepo;
+        private readonly IFlightDocumentTypeRepository _flightDocumentTypeRepo;
         const string NAMECONTROLLER = "FlightDocumentType"; //hien thi ten cua thong bao
-        public DocumentTypeController(IFlightDocumentTypeResponsitory flightDocumentTypeRepo)
+        public DocumentTypeController(IFlightDocumentTypeRepository flightDocumentTypeRepo)
         {
             _flightDocumentTypeRepo = flightDocumentTypeRepo;
         }

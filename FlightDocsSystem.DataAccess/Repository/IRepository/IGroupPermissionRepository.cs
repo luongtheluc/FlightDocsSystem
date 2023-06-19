@@ -6,7 +6,7 @@ using FlightDocsSystem.Model.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {   
-    public interface IGroupPermissionResponsitory
+    public interface IGroupPermissionRepository
     {
         public Task<List<GroupPermissionDTO>> GetAllGroupPermissionAsync();
         public Task<GroupPermissionDTO> GetGroupPermissionByIdAsync(int id);

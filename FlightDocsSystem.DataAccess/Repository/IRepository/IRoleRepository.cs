@@ -6,7 +6,7 @@ using FlightDocsSystem.Models.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IRoleResponsitory
+    public interface IRoleRepository
     {
         public Task<List<RoleDTO>> GetAllRoleAsync();
         public Task<RoleDTO> GetRoleByIdAsync(int id);

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IFirebaseStorageService
+    public interface IFirebaseStorageRepository
     {
         public Task<string> UploadFile(IFormFile file, string? DocumentVersion);
+        public Task<bool> DeleteFile(string fileName);
     }
 }

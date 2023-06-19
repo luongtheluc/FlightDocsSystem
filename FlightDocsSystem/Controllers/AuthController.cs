@@ -14,11 +14,11 @@ namespace FlightDocsSystem.Controllers
     public class AuthController : ControllerBase
     {
 
-        private readonly IAuthResponsitory _authRepo;
+        private readonly IAuthRepository _authRepo;
         private readonly IConfiguration _configuration;
-        private readonly IRoleResponsitory _roleRepo;
+        private readonly IRoleRepository _roleRepo;
 
-        public AuthController(IAuthResponsitory authRepo, IConfiguration configuration, IRoleResponsitory roleResponsitory)
+        public AuthController(IAuthRepository authRepo, IConfiguration configuration, IRoleRepository roleResponsitory)
         {
             this._roleRepo = roleResponsitory;
             this._configuration = configuration;

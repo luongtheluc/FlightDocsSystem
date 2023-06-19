@@ -9,14 +9,38 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace FlightDocsSystem.DataAccess.Repository
 {
-    public class FirebaseStorageService : IFirebaseStorageService
+    public class FirebaseStorageRepository : IFirebaseStorageRepository
     {
         private readonly IConfiguration _configuration;
 
-        public FirebaseStorageService(IConfiguration configuration)
+        public FirebaseStorageRepository(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+
+        public async Task<bool> DeleteFile(string fileName)
+        {
+            try
+            {
+                var projectId = _configuration["Firebase:ProjectId"];
+                var credentialFilePath = "..\\FlightDocsSystem\\service-account.json";
+                var credential = GoogleCredential.FromFile(credentialFilePath);
+                var storageClient = await StorageClient.CreateAsync(credential);
+
+                var bucketName = _configuration["Firebase:BucketName"];
+
+                await storageClient.DeleteObjectAsync(bucketName, fileName);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Handle error
+                Console.WriteLine($"Error deleting file: {ex.Message}");
+                return false;
+            }
+        }
+
 
         public async Task<string> UploadFile(IFormFile file, string? documentVersion)
         {

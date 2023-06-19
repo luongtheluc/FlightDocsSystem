@@ -6,7 +6,7 @@ using FlightDocsSystem.Models.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IAirportResponsitory
+    public interface IAirportRepository
     {
         public Task<List<AirportDTO>> GetAllAirportAsync();
         public Task<AirportDTO> GetAirportByIdAsync(int id);

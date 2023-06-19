@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightDocsSystem.DataAccess.Repository
 {
-    public class AircraftResponsitory : IAircraftResponsitory
+    public class AircraftRepository : IAircraftRepository
     {
         private readonly FlightDocsSystemContext _context;
         private readonly IMapper _mapper;
 
-        public AircraftResponsitory(FlightDocsSystemContext context, IMapper mapper)
+        public AircraftRepository(FlightDocsSystemContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface ISendMailReponsitory
+    public interface ISendMailRepository
     {
-        
+        public Task SendEmailAsync(EmailDTO request, string filepath = null!);
     }
 }

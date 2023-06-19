@@ -15,9 +15,9 @@ namespace FlightDocsSystem.Controllers
     [Authorize]
     public class PassengerController : ControllerBase
     {
-        private readonly IPassengerResponsitory _passengerRepo;
+        private readonly IPassengerRepository _passengerRepo;
 
-        public PassengerController(IPassengerResponsitory PassengerTypeRepo)
+        public PassengerController(IPassengerRepository PassengerTypeRepo)
         {
             _passengerRepo = PassengerTypeRepo;
         }

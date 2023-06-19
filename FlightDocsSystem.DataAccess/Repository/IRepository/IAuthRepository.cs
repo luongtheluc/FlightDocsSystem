@@ -8,7 +8,7 @@ using FlightDocsSystem.Models.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IAuthResponsitory
+    public interface IAuthRepository
     {
         public Task<int> AddUserAsync(UserDTO user, string randomToken);
         public Task<User> GetUserByIdAsync(int id);

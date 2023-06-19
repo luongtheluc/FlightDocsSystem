@@ -15,9 +15,9 @@ namespace FlightDocsSystem.Controllers
     [Authorize]
     public class RoleController : ControllerBase
     {
-        private readonly IRoleResponsitory _roleRepo;
+        private readonly IRoleRepository _roleRepo;
 
-        public RoleController(IRoleResponsitory RoleRepo)
+        public RoleController(IRoleRepository RoleRepo)
         {
             _roleRepo = RoleRepo;
         }

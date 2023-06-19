@@ -13,11 +13,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightDocsSystem.DataAccess.Repository
 {
-    public class RoleResponsitory : IRoleResponsitory
+    public class RoleRepository : IRoleRepository
     {
         private readonly FlightDocsSystemContext _context;
         private readonly IMapper _mapper;
-        public RoleResponsitory(FlightDocsSystemContext context, IMapper mapper)
+        public RoleRepository(FlightDocsSystemContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

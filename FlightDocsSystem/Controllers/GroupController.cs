@@ -15,9 +15,9 @@ namespace FlightDocsSystem.Controllers
     [Authorize]
     public class GroupController : ControllerBase
     {
-        private readonly IGroupPermissionResponsitory _groupRepo;
+        private readonly IGroupPermissionRepository _groupRepo;
 
-        public GroupController(IGroupPermissionResponsitory groupPermissionResponsitory)
+        public GroupController(IGroupPermissionRepository groupPermissionResponsitory)
         {
             _groupRepo = groupPermissionResponsitory;
         }

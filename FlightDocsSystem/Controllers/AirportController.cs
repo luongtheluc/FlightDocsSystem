@@ -15,9 +15,9 @@ namespace FlightDocsSystem.Controllers
     [Authorize]
     public class AirportController : ControllerBase
     {
-        private readonly IAirportResponsitory _airportRepo;
+        private readonly IAirportRepository _airportRepo;
 
-        public AirportController(IAirportResponsitory AirportTypeRepo)
+        public AirportController(IAirportRepository AirportTypeRepo)
         {
             _airportRepo = AirportTypeRepo;
         }

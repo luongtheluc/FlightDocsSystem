@@ -11,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightDocsSystem.DataAccess.Repository
 {
-    public class GroupPermissionResponsitory : IGroupPermissionResponsitory
+    public class GroupPermissionRepository : IGroupPermissionRepository
     {
         private readonly FlightDocsSystemContext _context;
         private readonly IMapper _mapper;
 
-        public GroupPermissionResponsitory(IMapper mapper, FlightDocsSystemContext context)
+        public GroupPermissionRepository(IMapper mapper, FlightDocsSystemContext context)
         {
             _mapper = mapper;
             _context = context;

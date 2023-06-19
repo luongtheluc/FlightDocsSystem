@@ -7,7 +7,7 @@ using FlightDocsSystem.Model.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IAircraftResponsitory
+    public interface IAircraftRepository
     {
         public Task<List<AircraftsDTO>> GetAllAircraftsAsync();
         public Task<AircraftsDTO> GetAircraftsAsync(int id);

@@ -8,7 +8,7 @@ using FlightDocsSystem.Models.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IAircraftTypeResponsitory
+    public interface IAircraftTypeRepository
     {
         public Task<List<AircraftTypeDTO>> GetAllAircraftTypeAsync();
         public Task<AircraftTypeDTO> GetAircraftTypeByIdAsync(int id);

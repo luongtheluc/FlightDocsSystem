@@ -6,7 +6,7 @@ using FlightDocsSystem.Models.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IFlightDocumentTypeResponsitory
+    public interface IFlightDocumentTypeRepository
     {
         public Task<List<FlightDocumentTypeDTO>> GetAllFlightDocumentTypeAsync();
         public Task<FlightDocumentTypeDTO> GetFlightDocumentTypeByIdAsync(int id);

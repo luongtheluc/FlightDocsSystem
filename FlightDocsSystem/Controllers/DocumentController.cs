@@ -10,11 +10,11 @@ namespace FlightDocsSystem.Controllers
     //[Authorize]
     public class DocumentController : ControllerBase
     {
-        private readonly IDocumentResponsitory _documentRepo;
-        private readonly IFirebaseStorageService _firebaseStorageService;
-        private readonly IFlightResponsitory _flightRepo;
+        private readonly IDocumentRepository _documentRepo;
+        private readonly IFirebaseStorageRepository _firebaseStorageService;
+        private readonly IFlightRepository _flightRepo;
 
-        public DocumentController(IDocumentResponsitory documentRepo, IFirebaseStorageService firebaseStorageService, IFlightResponsitory flightRepo)
+        public DocumentController(IDocumentRepository documentRepo, IFirebaseStorageRepository firebaseStorageService, IFlightRepository flightRepo)
         {
             this._flightRepo = flightRepo;
             this._documentRepo = documentRepo;
@@ -25,12 +25,11 @@ namespace FlightDocsSystem.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDocument(string? searchKeyword)
+        public async Task<IActionResult> GetAllDocument(string? searchKeyword, int currentPage = 1, int pageSize = 5)
         {
             try
             {
-                var currentPage = 1;
-                var pageSize = 5;
+
                 var Documents = await _documentRepo.GetAllDocumentAsync(currentPage, pageSize, searchKeyword);
                 return Ok(new ApiResponse
                 {
@@ -175,7 +174,7 @@ namespace FlightDocsSystem.Controllers
                     return Ok(new ApiResponse
                     {
                         Success = true,
-                        Message = "Get " + NAMECONTROLLER + " success",
+                        Message = "Update " + NAMECONTROLLER + " success",
                         Data = document
                     });
                 }
@@ -183,7 +182,7 @@ namespace FlightDocsSystem.Controllers
                 return NotFound(new ApiResponse
                 {
                     Success = false,
-                    Message = "Get " + NAMECONTROLLER + " fail",
+                    Message = "Update " + NAMECONTROLLER + " fail",
                     Data = null
                 });
             }
@@ -203,8 +202,8 @@ namespace FlightDocsSystem.Controllers
         {
             try
             {
-                var Document = await _documentRepo.GetDocumentByIdAsync(id);
-                if (Document == null)
+                var document = await _documentRepo.GetDocumentByIdAsync(id);
+                if (document == null)
                 {
                     return NotFound(new ApiResponse
                     {
@@ -214,13 +213,28 @@ namespace FlightDocsSystem.Controllers
                     });
                 }
 
-                await _documentRepo.DeleteDocumentAsync(id);
-                return Ok(new ApiResponse
+                var delete = await _firebaseStorageService.DeleteFile(document.DocumentName!);
+                if (delete)
                 {
-                    Success = true,
-                    Message = "Delete " + NAMECONTROLLER + " success",
-                    Data = null
-                });
+                    await _documentRepo.DeleteDocumentAsync(document.DocumentId);
+                    return Ok(new ApiResponse
+                    {
+                        Success = true,
+                        Message = "Delete " + NAMECONTROLLER + " success",
+                        Data = null
+                    });
+                }
+                else
+                {
+                    return BadRequest(new ApiResponse
+                    {
+                        Success = false,
+                        Message = "Some thing wrong when delete document",
+                        Data = null
+                    });
+                }
+
+
             }
             catch (System.Exception e)
             {

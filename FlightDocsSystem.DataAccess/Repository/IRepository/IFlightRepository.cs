@@ -6,7 +6,7 @@ using FlightDocsSystem.Models.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IFlightResponsitory
+    public interface IFlightRepository
     {
         public Task<List<FlightDTO>> GetAllFlightAsync();
         public Task<FlightDTO> GetFlightByIdAsync(int id);

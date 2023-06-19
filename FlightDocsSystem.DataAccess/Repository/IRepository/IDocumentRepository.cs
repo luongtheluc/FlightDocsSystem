@@ -7,7 +7,7 @@ using FlightDocsSystem.Models.DTOs;
 
 namespace FlightDocsSystem.DataAccess.Repository.IRepository
 {
-    public interface IDocumentResponsitory
+    public interface IDocumentRepository
     {
         public Task<List<DocumentDTO>> GetAllDocumentAsync(int currentPage, int pageSize, string? searchKeyword = null);
         public Task<DocumentDTO> GetDocumentByIdAsync(int id);

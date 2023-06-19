@@ -8,15 +8,18 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FlightDocsSystem.DataAccess.Repository.IRepository;
+using System.Security.Cryptography;
 
 namespace FlightDocsSystem.DataAccess.Repository
 {
-    public class AuthResponsitory : IAuthResponsitory
+    public class AuthRepository : IAuthRepository
     {
         private readonly FlightDocsSystemContext _context;
         private readonly IMapper _mapper;
-        public AuthResponsitory(FlightDocsSystemContext context, IMapper mapper)
+        private readonly ISendMailRepository _sendMailRepo;
+        public AuthRepository(FlightDocsSystemContext context, IMapper mapper, ISendMailRepository sendMailRepo)
         {
+            this._sendMailRepo = sendMailRepo;
             _context = context;
             _mapper = mapper;
         }
@@ -118,7 +121,28 @@ namespace FlightDocsSystem.DataAccess.Repository
                 return -1;
             }
         }
+        public async Task<int> ForgotPassword(string email)
+        {
+            var user = await _context.Users!.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return -1;
+            }
 
+            user.PasswordResetToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+            user.ResetTokenExpries = DateTime.Now.AddDays(1);
+            await _context.SaveChangesAsync();
+
+            var sendEmail = new EmailDTO
+            {
+                To = email,
+                Subject = "Reset password link",
+                Body = "<a target=" + "_blank" + " href=" + "http://localhost:5017/reset-password/" + user.PasswordResetToken + ">CLICK HERE</a>"
+
+            };
+            await _sendMailRepo.SendEmailAsync(sendEmail);
+            return 1;
+        }
         public async Task<User> GetUserByAccessToken(string token, string secretKey)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

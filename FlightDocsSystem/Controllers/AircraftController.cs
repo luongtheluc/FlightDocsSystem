@@ -15,9 +15,9 @@ namespace FlightDocsSystem.Controllers
     [Authorize]
     public class AircraftController : ControllerBase
     {
-        private readonly IAircraftResponsitory _aircraftRepo;
+        private readonly IAircraftRepository _aircraftRepo;
         const string NAMECONTROLLER = "Aircraft"; //hien thi ten cua thong bao
-        public AircraftController(IAircraftResponsitory repo)
+        public AircraftController(IAircraftRepository repo)
         {
             this._aircraftRepo = repo;
         }

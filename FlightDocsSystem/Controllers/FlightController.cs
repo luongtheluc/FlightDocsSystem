@@ -15,9 +15,9 @@ namespace FlightDocsSystem.Controllers
     [Authorize]
     public class FlightController : ControllerBase
     {
-        private readonly IFlightResponsitory __flightRepo;
+        private readonly IFlightRepository __flightRepo;
 
-        public FlightController(IFlightResponsitory _flightRepo)
+        public FlightController(IFlightRepository _flightRepo)
         {
             __flightRepo = _flightRepo;
         }
